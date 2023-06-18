@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)file:///C:/Users/91843/Desktop/Untitled-2.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Weather &amp; Air Pollution Web App</title>
+  <style>
+    /* CSS styling for the page */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #688cb8;
+      border-radius: 5px;
+      text-align: center;
+    }
+    
+    h1 {
+      margin-bottom: 20px;
+      color: #1e303d;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #101f2b;
+    }
+    
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #b9c99a;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    
+    #result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #9f9797;
+      background-color: #b6abdb;
+      color: #eec5de;
+      line-height: 1.5;
+    }
+    
+    #result h4 {
+      margin-top: 0;
+      color: #a2d7e4;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #b9cde4;
+      border: none;
+      border-radius: 5px;
+      color: #b62882;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #abb9c8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>WEATHER &amp; AIR POLLUTION IN YOUR AREA</h2>
+    
+    <label for="lat">Latitude:</label>
+    <input type="text" id="lat" placeholder="Enter latitude">
+    
+    <label for="lng">Longitude:</label>
+    <input type="text" id="lng" placeholder="Enter longitude">
+    
+    <label for="output-select">Select Output:</label>
+    <select id="output-select">
+      <option value="weather">Weather Information</option>
+      <option value="air-pollution">Air Pollution Information</option>
+    </select>
+    
+    <button onclick="getFeatureInfo()">CLICK HERE to get information</button>
+    
+    <div id="result"></div>
+  </div>
+  
+  <script>
+    function getFeatureInfo() {
+      // Fetch the latitude and longitude values
+      var lat = document.getElementById('lat').value;
+      var lng = document.getElementById('lng').value;
+      
+      // Fetch the selected output
+      var outputSelect = document.getElementById('output-select');
+      var selectedOutput = outputSelect.options[outputSelect.selectedIndex].value;
+      
+      // Perform API call based on the selected output
+      if (selectedOutput === 'weather') {
+        fetchWeatherData(lat, lng);
+      } else if (selectedOutput === 'air-pollution') {
+        fetchAirPollutionData(lat, lng);
+      }
+    }
+    
+    function fetchWeatherData(lat, lng) {
+      // API URL for weather data (replace with your actual API endpoint)
+      var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lng + '&appid=ec1750a2b440e88a2138d771310d71bd';
+      
+      // Implement API call to retrieve weather data based on latitude and longitude
+      fetch(weatherApiUrl)
+        .then(response => response.json())
+        .then(data => {
+          // Code for displaying the weather result
+          var resultDiv = document.getElementById('result');
+          resultDiv.innerHTML = '<h4>Weather Data for Latitude: ' + lat + ' & Longitude: ' + lng + '</h4>' +
+                                '<strong>Temperature:</strong> ' + Math.round(data.main.temp - 273.15) + '°C,' + '&nbsp&nbsp' + data.weather[0].description + '<br>'+
+                                '<strong>Humidity:</strong> ' + data.main.humidity + ' %<br>' +
+                                '<strong>Wind Speed:</strong> ' + data.wind.speed + ' m/s<br>' +
+                                '<strong>Feels Like:</strong> ' + Math.round(data.main.feels_like - 273.15) + '°C<br>';
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+    
+    function fetchAirPollutionData(lat, lng) {
+      // API URL for air pollution data (replace with your actual API endpoint)
+      var airPollutionApiUrl = 'http://api.openweathermap.org/data/2.5/air_pollution?lat=' + lat + '&lon=' + lng + '&appid=e1b95b2d8344faaa4dff49dca8da9f71';
+      // Implement API call to retrieve air pollution data based on latitude and longitude
+      fetch(airPollutionApiUrl)
+        .then(response => response.json())
+        .then(data => {
+          // Code for displaying the air pollution result
+          var resultDiv = document.getElementById('result');
+          var aqi = data.list[0].main.aqi;
+          var aqiText;
+          if (aqi === 1) {
+            aqiText = 'Good';
+          } else if (aqi === 2) {
+            aqiText = 'Fair';
+          } else if (aqi === 3) {
+            aqiText = 'Moderate';
+          } else if (aqi === 4) {
+            aqiText = 'Poor';
+          } else if (aqi === 5) {
+            aqiText = 'Very Poor';
+          } else {
+            aqiText = 'Unknown';
+          }
+          resultDiv.innerHTML = '<h4>Air Pollution Data for Latitude: ' + lat + ' & Longitude: ' + lng + '</h4>' +
+                                '<strong>AQI:</strong> ' + aqiText + '<br>' +
+                                '<strong>Pollutant Concentrations - (in μg/m³)</strong>' + '<br>' +
+                                '<strong>PM2.5:</strong> ' + data.list[0].components.pm2_5 + ' μg/m³<br>' +
+                                '<strong>PM10:</strong> ' + data.list[0].components.pm10 + ' μg/m³<br>' +
+                                '<strong>Carbon Monoxide (CO):</strong> ' + data.list[0].components.co + ' μg/m³<br>' +
+                                '<strong>Nitrogen Monoxide (NO):</strong> ' + data.list[0].components.no + ' μg/m³<br>' +
+                                '<strong>Nitrogen Dioxide (NO2):</strong> ' + data.list[0].components.no2 + ' μg/m³<br>' +
+                                '<strong>Sulphur Dioxide (SO2):</strong> ' + data.list[0].components.so2 + ' μg/m³<br>' +
+                                '<strong>Ozone (O3):</strong> ' + data.list[0].components.o3 + ' μg/m³<br>';
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
+
+</body></html>
