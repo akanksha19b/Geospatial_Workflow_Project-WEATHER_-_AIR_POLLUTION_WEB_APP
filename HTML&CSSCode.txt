@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weather & Air Pollution Web App</title>
+  <style>
+    //* CSS styling for the page *//
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #e7e7e7;
+      border-radius: 5px;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+    }
+    
+    .left-panel {
+      flex: 1;
+      padding-right: 20px;
+    }
+    
+    .right-panel {
+      flex: 1;
+      margin: 10px;
+    }
+    
+    h2 {
+      margin-bottom: 20px;
+      color: #333333;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #333333;
+    }
+    
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    
+    #output-select {
+      margin-bottom: 30px;
+    }
+    
+    #result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #303030;
+      background-color: #ffffff;
+      color: #333333;
+      line-height: 1.5;
+    }
+    
+    #result h4 {
+      margin-top: 0;
+      color: #333333;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #0063cc;
+      border: none;
+      border-radius: 5px;
+      color: #ffffff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #0050a5;
+    }
+    
+    #map {
+      height: 650px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-panel">
+      <h2>WEATHER & AIR POLLUTION IN YOUR AREA</h2>
+    
+      <label for="lat">Latitude:</label>
+      <input type="text" id="lat" placeholder="Enter latitude">
+    
+      <label for="lng">Longitude:</label>
+      <input type="text" id="lng" placeholder="Enter longitude">
+    
+      <label for="output-select">Select Output:</label>
+      <select id="output-select">
+        <option value="weather">Weather Information</option>
+        <option value="air-pollution">Air Pollution Information</option>
+      </select>
+    
+      <button onclick="getFeatureInfo()">CLICK HERE to get information</button>
+    
+      <div id="result"></div>
+    </div>
+  
+    <div class="right-panel">
+      <div id="map"></div>
+    </div>
+  </div>
+  
+  //*Loading Leaflet JavaScript library in HTML, to display the output on the Map*//
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+  
+  <script>
+    //*Use the JavaScriptCode file to edit the script part*//
+  </script>
+
+  <footer>
+    <p>Made by Aakanksha & Disha (in collaboration with 'asahyaursmha')</p>
+  </footer>
+</body>
+</html>
